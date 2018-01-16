@@ -1,3 +1,4 @@
+import { supportedProperty, supportedValue } from 'css-vendor'
 import sheet from './sheet'
 
 const REG = /^([wmp][trblxy]?|flex|wrap|column|auto|align|justify|order)$/
@@ -71,7 +72,11 @@ const join = (...args) => args
   .filter(a => !!a)
   .join(' ')
 
-const dec = args => args.join(':')
+const dec = args => {
+  const key = supportedProperty(args[0]) || args[0]
+  const val = supportedValue(key, args[1]) || args[1]
+  return `${key}:${val}`
+}
 const rule = args => args.join(';')
 const media = (bp, body) => bp ? `@media screen and (min-width:${bp}em){${body}}` : body
 
